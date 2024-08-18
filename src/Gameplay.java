@@ -10,9 +10,19 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener {
     private final Color backgroundColor = new Color(40, 40, 40);
     private int borderSize = 10;
     private Board board;
+    private Snake snake;
+    private boolean play = false;
+    private Timer timer;
+    private final int delay = 150;
+
 
     public Gameplay() {
         setBackground(backgroundColor);
+        addKeyListener(this);
+        setFocusable(true);
+        snake = new Snake();
+        timer = new Timer(delay, this);
+        timer.start();
     }
 
     @Override
@@ -25,30 +35,42 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener {
         board.draw(g);
         Board.BoardData boardData = board.getBoard();
 
-        // snake
-        g.setColor(Color.RED);
-        g.fillRect(boardData.gridOffsetX + 1, boardData.gridOffsetY + 1, boardData.gridSize - 1, boardData.gridSize - 1);
+        // draw snake
+        snake.setMaxSize(boardData.gridRowColumn);
+        snake.draw(g, boardData.gridSize, boardData.gridOffsetX, boardData.gridOffsetY);
+        snake.move();
 
         g.dispose();
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
-
-    }
-
-    @Override
-    public void keyTyped(KeyEvent e) {
-
+        if (play) {
+            repaint();
+        }
     }
 
     @Override
     public void keyPressed(KeyEvent e) {
-
+        if (e.getKeyCode() == KeyEvent.VK_LEFT) {
+            play = true;
+            snake.changeDirection(Snake.Direction.LEFT);
+        } else if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
+            play = true;
+            snake.changeDirection(Snake.Direction.RIGHT);
+        } else if (e.getKeyCode() == KeyEvent.VK_UP) {
+            play = true;
+            snake.changeDirection(Snake.Direction.UP);
+        } else if (e.getKeyCode() == KeyEvent.VK_DOWN) {
+            play = true;
+            snake.changeDirection(Snake.Direction.DOWN);
+        }
     }
 
     @Override
-    public void keyReleased(KeyEvent e) {
+    public void keyTyped(KeyEvent e) {}
 
-    }
+    @Override
+    public void keyReleased(KeyEvent e) {}
+
 }
