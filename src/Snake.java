@@ -1,5 +1,4 @@
 import java.awt.*;
-import java.util.HashMap;
 import java.util.LinkedList;
 
 public class Snake {
@@ -26,16 +25,17 @@ public class Snake {
         maxSize = size;
     }
 
-    public void changeDirection(Direction dir) {
+    public boolean changeDirection(Direction dir) {
         if (dir == Direction.LEFT) {
-            moveLeft(dir);
+            return moveLeft(dir);
         } else if (dir == Direction.RIGHT) {
-            moveRight(dir);
+            return moveRight(dir);
         } else if (dir == Direction.UP) {
-            moveUp(dir);
+            return moveUp(dir);
         } else if (dir == Direction.DOWN) {
-            moveDown(dir);
+            return moveDown(dir);
         }
+        return false;
     }
 
     private static class Position {
@@ -47,16 +47,17 @@ public class Snake {
         }
     }
 
-    public void move() {
+    public boolean move() {
         if (direction == Direction.LEFT) {
-            moveLeft(direction);
+            return moveLeft(direction);
         } else if (direction == Direction.RIGHT) {
-            moveRight(direction);
+            return moveRight(direction);
         } else if (direction == Direction.UP) {
-            moveUp(direction);
+            return moveUp(direction);
         } else if (direction == Direction.DOWN) {
-            moveDown(direction);
+            return moveDown(direction);
         }
+        return false;
     }
 
     public void draw(Graphics g, int gridSize, int gridOffsetX, int gridOffsetY) {
@@ -68,60 +69,60 @@ public class Snake {
         }
     }
 
-    public void moveLeft(Direction dir) {
+    private boolean moveLeft(Direction dir) {
         Position head = snakePositions.getFirst();
         if (head.column == 0) {
-            // Game Over
-            return;
+            return false;
         }
         if (direction == Direction.RIGHT) {
-            return;
+            return true;
         }
         direction = dir;
         snakePositions.addFirst(new Position(head.row, head.column - 1));
         snakePositions.removeLast();
+        return true;
     }
 
-    public void moveRight(Direction dir) {
+    private boolean moveRight(Direction dir) {
         Position head = snakePositions.getFirst();
         if (head.column == maxSize - 1) {
-            // Game Over
-            return;
+            return false;
         }
         if (direction == Direction.LEFT) {
-            return;
+            return true;
         }
         direction = dir;
         snakePositions.addFirst(new Position(head.row, head.column + 1));
         snakePositions.removeLast();
+        return true;
     }
 
-    public void moveUp(Direction dir) {
+    private boolean moveUp(Direction dir) {
         Position head = snakePositions.getFirst();
         if (direction == Direction.DOWN) {
-            return;
+            return false;
         }
         if (head.row == 0) {
-            // Game Over
-            return;
+            return true;
         }
         direction = dir;
         snakePositions.addFirst(new Position(head.row - 1, head.column));
         snakePositions.removeLast();
+        return true;
     }
 
-    public void moveDown(Direction dir) {
+    private boolean moveDown(Direction dir) {
         Position head = snakePositions.getFirst();
         if (head.row == maxSize - 1) {
-            // Game Over
-            return;
+            return false;
         }
         if (direction == Direction.UP) {
-            return;
+            return true;
         }
         direction = dir;
         snakePositions.addFirst(new Position(head.row + 1, head.column));
         snakePositions.removeLast();
+        return true;
     }
 
 

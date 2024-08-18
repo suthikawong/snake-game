@@ -38,7 +38,7 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener {
         // draw snake
         snake.setMaxSize(boardData.gridRowColumn);
         snake.draw(g, boardData.gridSize, boardData.gridOffsetX, boardData.gridOffsetY);
-        snake.move();
+        play = snake.move();
 
         g.dispose();
     }
@@ -53,17 +53,13 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener {
     @Override
     public void keyPressed(KeyEvent e) {
         if (e.getKeyCode() == KeyEvent.VK_LEFT) {
-            play = true;
-            snake.changeDirection(Snake.Direction.LEFT);
+            play = snake.changeDirection(Snake.Direction.LEFT);
         } else if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
-            play = true;
-            snake.changeDirection(Snake.Direction.RIGHT);
+            play = snake.changeDirection(Snake.Direction.RIGHT);
         } else if (e.getKeyCode() == KeyEvent.VK_UP) {
-            play = true;
-            snake.changeDirection(Snake.Direction.UP);
+            play = snake.changeDirection(Snake.Direction.UP);
         } else if (e.getKeyCode() == KeyEvent.VK_DOWN) {
-            play = true;
-            snake.changeDirection(Snake.Direction.DOWN);
+            play = snake.changeDirection(Snake.Direction.DOWN);
         }
     }
 
