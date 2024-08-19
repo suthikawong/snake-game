@@ -50,6 +50,21 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener {
         // draw food
         food.draw(g);
 
+        if (!play) {
+            g.setColor(Color.WHITE);
+            Position head = snake.snakePositions.getFirst();
+            if (score == 0 && head.row == 4 && head.column == 7) {
+                g.setFont(new Font("serif", Font.BOLD, 30));
+                g.drawString("Press Space Bar to Start", 150, 300);
+            } else {
+                g.setFont(new Font("serif", Font.BOLD, 30));
+                g.drawString("Game Over, Scores:" + score, 165, 275);
+
+                g.setFont(new Font("serif", Font.BOLD, 20));
+                g.drawString("Press Space Bar to Restart", 185, 325);
+            }
+        }
+
         g.dispose();
     }
 
@@ -70,21 +85,31 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener {
                 snake.snakePositions.addLast(new Position(last.row + yDir, last.column + xDir));
                 score += 1;
             }
-            repaint();
         }
+        repaint();
     }
 
     @Override
     public void keyPressed(KeyEvent e) {
-        if (e.getKeyCode() == KeyEvent.VK_LEFT) {
-            play = snake.changeDirection(Snake.Direction.LEFT);
-        } else if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
-            play = snake.changeDirection(Snake.Direction.RIGHT);
-        } else if (e.getKeyCode() == KeyEvent.VK_UP) {
-            play = snake.changeDirection(Snake.Direction.UP);
-        } else if (e.getKeyCode() == KeyEvent.VK_DOWN) {
-            play = snake.changeDirection(Snake.Direction.DOWN);
+        if (play) {
+            if (e.getKeyCode() == KeyEvent.VK_LEFT) {
+                play = snake.changeDirection(Snake.Direction.LEFT);
+            } else if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
+                play = snake.changeDirection(Snake.Direction.RIGHT);
+            } else if (e.getKeyCode() == KeyEvent.VK_UP) {
+                play = snake.changeDirection(Snake.Direction.UP);
+            } else if (e.getKeyCode() == KeyEvent.VK_DOWN) {
+                play = snake.changeDirection(Snake.Direction.DOWN);
+            }
+        } else if (e.getKeyCode() == KeyEvent.VK_SPACE) {
+            reset();
         }
+    }
+
+    public void reset() {
+        play = true;
+        score = 0;
+        board = null;
     }
 
     public boolean checkIsEatenFood() {
