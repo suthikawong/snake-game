@@ -2,15 +2,22 @@ import java.awt.*;
 import java.util.LinkedList;
 
 public class Snake {
-    private LinkedList<Position> snakePositions = new LinkedList<>();
+    public LinkedList<Position> snakePositions = new LinkedList<>();
     private Direction direction = Direction.RIGHT;
-    private int maxSize;
+    private final int gridRowColumnSize;
+    private int gridSize;
+    private int gridOffsetX;
+    private int gridOffsetY;
 
     public enum Direction {
         LEFT, RIGHT, UP, DOWN
     }
 
-    public Snake() {
+    public Snake(int gridRowColumnSize, int gridSize, int gridOffsetX, int gridOffsetY) {
+        this.gridRowColumnSize = gridRowColumnSize;
+        this.gridSize = gridSize;
+        this.gridOffsetX = gridOffsetX;
+        this.gridOffsetY = gridOffsetY;
         reset();
     }
 
@@ -19,10 +26,6 @@ public class Snake {
         snakePositions.add(new Position(4, 7));
         snakePositions.add(new Position(4, 6));
         snakePositions.add(new Position(4, 5));
-    }
-
-    public void setMaxSize(int size) {
-        maxSize = size;
     }
 
     public boolean changeDirection(Direction dir) {
@@ -38,15 +41,6 @@ public class Snake {
         return false;
     }
 
-    private static class Position {
-        public int row;
-        public int column;
-        public Position(int row,int column) {
-            this.row = row;
-            this.column = column;
-        }
-    }
-
     public boolean move() {
         if (direction == Direction.LEFT) {
             return moveLeft(direction);
@@ -60,7 +54,7 @@ public class Snake {
         return false;
     }
 
-    public void draw(Graphics g, int gridSize, int gridOffsetX, int gridOffsetY) {
+    public void draw(Graphics g) {
         g.setColor(Color.RED);
         for (Position pos: snakePositions) {
             int x = gridOffsetX + (gridSize * pos.column) + 1;
@@ -85,7 +79,7 @@ public class Snake {
 
     private boolean moveRight(Direction dir) {
         Position head = snakePositions.getFirst();
-        if (head.column == maxSize - 1) {
+        if (head.column == gridRowColumnSize - 1) {
             return false;
         }
         if (direction == Direction.LEFT) {
@@ -113,7 +107,7 @@ public class Snake {
 
     private boolean moveDown(Direction dir) {
         Position head = snakePositions.getFirst();
-        if (head.row == maxSize - 1) {
+        if (head.row == gridRowColumnSize - 1) {
             return false;
         }
         if (direction == Direction.UP) {
